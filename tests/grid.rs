@@ -85,18 +85,18 @@ fn fractional_position_matches_integer_position() {
     const CHUNK_SIZE: usize = 16;
     const MIDDLE: usize = CHUNK_SIZE / 2;
 
-    let old_way = Grid::<2>::new(CHUNK_SIZE, CHUNK_SIZE);
-    let old_noise = old_way.builder::<Fbm, Perlin>().build();
+    let normal = Grid::<2>::new(CHUNK_SIZE, CHUNK_SIZE);
+    let normal = normal.builder::<Fbm, Perlin>().build();
 
     // Magnified grid should be able to lookup fractional positions
     // and they should match with unmagnified grid values
-    let new_way = Grid::<2>::new(2, 2).sample_position(0.5, 0.5);
-    let new_noise = new_way
+    let zoomed_out = Grid::<2>::new(2, 2).sample_position(0.5, 0.5);
+    let zommed_out = zoomed_out
         .builder::<Fbm, Perlin>()
         .magnification(CHUNK_SIZE as f32)
         .build();
 
-    assert!((old_noise[MIDDLE * CHUNK_SIZE + MIDDLE] - new_noise[0]).abs() < 1e-6);
+    assert!((normal[MIDDLE * CHUNK_SIZE + MIDDLE] - zommed_out[0]).abs() < 1e-6);
 }
 
 #[test]
